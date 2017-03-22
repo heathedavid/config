@@ -206,9 +206,9 @@ func TestDurationFlag(t *testing.T) {
     t.Error("Flag should be set")
   }
 
-  //if s.Get() != time.Duration("10s") {
-  //  t.Error("Flag should be set to 10s")
-  //}
+  if s.Get() != time.Duration(time.Second*10) {
+    t.Error("Flag should be set to 10s")
+  }
 
   if s.String() != "10s" {
     t.Error("Flag should be set to 10s")
