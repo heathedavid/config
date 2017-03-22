@@ -22,22 +22,22 @@ type StringFlag struct {
 	value string
 }
 
-func (sf *StringFlag) Set(x string) error {
-	sf.value = x
-	sf.set = true
+func (f *StringFlag) Set(x string) error {
+	f.value = x
+	f.set = true
 	return nil
 }
 
-func (sf *StringFlag) String() string {
-	return sf.value
+func (f *StringFlag) String() string {
+	return f.value
 }
 
-func (sf *StringFlag) Get() interface{} {
-	return sf.value
+func (f *StringFlag) Get() interface{} {
+	return f.value
 }
 
-func (sf *StringFlag) IsSet() bool {
-	return sf.set
+func (f *StringFlag) IsSet() bool {
+	return f.set
 }
 
 
