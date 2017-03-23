@@ -426,3 +426,25 @@ func TestDurationParse2(t *testing.T) {
 		}
 	}
 }
+
+type MyType struct {
+  Field int
+}
+
+func TestMyTypeParse2(t *testing.T) {
+	ss := struct {
+		Field MyType
+	}{
+		MyType{3},
+	}
+
+	m := make(map[string]ConfigFlag)
+
+	f := reflect.ValueOf(&ss).Elem().Field(0)
+
+	_, err := parseDefault(m, f, "var15", "", "test env var", false)
+
+	if err == nil {
+		t.Error("Should have fialed as myType is unknown")
+	}
+}

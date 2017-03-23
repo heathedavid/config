@@ -5,7 +5,7 @@ package config
 
 import (
 	"flag"
-	_ "fmt"
+	"fmt"
 	"reflect"
 	"strconv"
 	"time"
@@ -147,10 +147,7 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			val := DurationValue{isDefVal, def, &cf, t}
 			return &val, nil
 		}
-
-		//case default:
-		// Have to handle duration
 	}
 
-	return nil, nil
+	return nil, fmt.Errorf("Unknow Type: %s", t.Type())
 }
