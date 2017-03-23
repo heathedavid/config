@@ -1,11 +1,11 @@
 /*
 Collection of flags which contain notion of whether flag has been set.
- */
+*/
 package config
 
 import (
 	"flag"
-  "strconv"
+	"strconv"
 	"time"
 )
 
@@ -39,7 +39,6 @@ func (f *StringFlag) Get() interface{} {
 func (f *StringFlag) IsSet() bool {
 	return f.set
 }
-
 
 // Int flag
 type IntFlag struct {
