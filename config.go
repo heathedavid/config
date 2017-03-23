@@ -1,5 +1,12 @@
 /*
+config is used to initialize configuration structures from the struct field tags
+or environmental variables.
 
+env_name - if defined will be the name of the environmental var (else field name)
+env_def  - if defined is used for a string representation of the default value
+ 					 if not defined and the environment variable is not defined the
+					 zero value for the field will be used.
+env_desc - A description of the environmental var
  */
 package config
 
@@ -10,6 +17,66 @@ import (
 	"strconv"
 	"time"
 )
+
+type setters struct {
+	s		[]SetValue
+}
+
+// Pass a point to the annotated structures you want to initialize
+func Load(structs ...interface{}) error {
+	if (flag.Parsed()) {
+		return fmt.Errorf("Load must be called before a call to flag.Pars")
+	}
+
+	m := make(map[string]ConfigFlag)
+
+	numStructs := len(structs)
+
+	fieldSetters := make([]setters, numStructs)
+
+	for i := 0; i < numStructs; i++ {
+		s := structs[i]
+
+		t := reflect.ValueOf(s).Elem()
+		typeOfT := t.Type()
+
+		fieldSetters[i].s = make([]SetValue, t.NumField())
+
+		for j := 0; j < t.NumField(); j++ {
+			f := t.Field(j)
+
+			tag := typeOfT.Field(i).Tag
+
+			var ok bool
+			var name string
+			if name, ok = tag.Lookup("env_name"); !ok {
+				name = typeOfT.Field(i).Name
+			}
+
+			defVal, isDefVal := tag.Lookup("env_def")
+
+			var desc string
+			if desc, ok = tag.Lookup("env_desc"); !ok {
+				desc = name
+			}
+
+			var err error
+			fieldSetters[i].s[j], err = parseDefault(m, f, name, defVal, desc, isDefVal)
+
+			if err != nil {
+				return nil
+			}
+		}
+	}
+
+	flag.Parse()
+	for i := 0; i < numStructs; i++ {
+		for j := 0; j < len(fieldSetters[i].s); j++ {
+			fieldSetters[i].s[j].Set()
+		}
+	}
+	return nil
+}
 
 var stringType = reflect.TypeOf((*string)(nil)).Elem()
 var intType = reflect.TypeOf((*int)(nil)).Elem()
