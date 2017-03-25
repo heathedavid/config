@@ -7,6 +7,7 @@ env_def  - if defined is used for a string representation of the default value
  					 if not defined and the environment variable is not defined the
 					 zero value for the field will be used.
 env_desc - A description of the environmental var
+env_no	 - Marka a field as a non-configartion filed (generally initialized)
 */
 package config
 
