@@ -428,7 +428,7 @@ func TestDurationParse2(t *testing.T) {
 }
 
 type MyType struct {
-  Field int
+	Field int
 }
 
 func TestMyTypeParse2(t *testing.T) {

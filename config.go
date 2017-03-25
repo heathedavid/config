@@ -7,7 +7,7 @@ env_def  - if defined is used for a string representation of the default value
  					 if not defined and the environment variable is not defined the
 					 zero value for the field will be used.
 env_desc - A description of the environmental var
- */
+*/
 package config
 
 import (
@@ -18,13 +18,28 @@ import (
 	"time"
 )
 
+// If the struct being configured implements this interface, it will be called
+// once all the flags have been loaded and fields initailized.
+type Validate interface {
+	// If all fields are initialized correctly, return nil - else reason.
+	Validate() error
+}
+
+// If the struct being configures implemens this interface, it will be called
+// once all the flags have been loaded, the fields initailized and any
+// Validation methods called.
+type Initialize interface {
+	// Used to initialize env_no fields using other values.
+	Initialize()
+}
+
 type setters struct {
-	s		[]SetValue
+	s []SetValue
 }
 
 // Pass a point to the annotated structures you want to initialize
 func Load(structs ...interface{}) error {
-	if (flag.Parsed()) {
+	if flag.Parsed() {
 		return fmt.Errorf("Load must be called before a call to flag.Pars")
 	}
 
@@ -45,9 +60,13 @@ func Load(structs ...interface{}) error {
 		for j := 0; j < t.NumField(); j++ {
 			f := t.Field(j)
 
-			tag := typeOfT.Field(i).Tag
+			tag := typeOfT.Field(j).Tag
 
 			var ok bool
+			if _, ok = tag.Lookup("env_no"); ok {
+				continue
+			} // Not a configuration field
+
 			var name string
 			if name, ok = tag.Lookup("env_name"); !ok {
 				name = typeOfT.Field(i).Name
@@ -72,9 +91,22 @@ func Load(structs ...interface{}) error {
 	flag.Parse()
 	for i := 0; i < numStructs; i++ {
 		for j := 0; j < len(fieldSetters[i].s); j++ {
-			fieldSetters[i].s[j].Set()
+			if fieldSetters[i].s[j] != nil {
+				fieldSetters[i].s[j].Set()
+			}
+		}
+
+		if v, ok := structs[i].(Validate); ok {
+			if err := v.Validate(); err != nil {
+				return err
+			}
+		}
+
+		if v, ok := structs[i].(Initialize); ok {
+			v.Initialize()
 		}
 	}
+
 	return nil
 }
 
