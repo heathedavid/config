@@ -7,7 +7,7 @@ env_def  - if defined is used for a string representation of the default value
  					 if not defined and the environment variable is not defined the
 					 zero value for the field will be used.
 env_desc - A description of the environmental var
-env_no	 - Marka a field as a non-configartion filed (generally initialized)
+env_no	 - Mark a field as a non-configuration field (generally initialized)
 */
 package config
 
@@ -26,7 +26,7 @@ type Validate interface {
 	Validate() error
 }
 
-// If the struct being configures implemens this interface, it will be called
+// If the struct being configures implements this interface, it will be called
 // once all the flags have been loaded, the fields initailized and any
 // Validation methods called.
 type Initialize interface {
@@ -123,7 +123,7 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 	desc string, isDefVal bool) (SetValue, error) {
 
 	var err error
-	switch t.Type() {
+	switch t.Type() { // I think I could use t.Interface().(type)
 	case stringType:
 		var def string
 		if isDefVal {
