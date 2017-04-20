@@ -17,7 +17,7 @@ func TestStringValue1(t *testing.T) {
 
 	flag := StringFlag{}
 
-	v := StringValue{false, "", &flag, f}
+	v := StringValue{"name", false, "", &flag, f}
 
 	v.Set()
 
@@ -37,7 +37,7 @@ func TestStringValue2(t *testing.T) {
 
 	flag := StringFlag{}
 
-	v := StringValue{true, "fred", &flag, f}
+	v := StringValue{"name", true, "fred", &flag, f}
 
 	v.Set()
 
@@ -57,7 +57,7 @@ func TestStringValue3(t *testing.T) {
 
 	flag := StringFlag{}
 
-	v := StringValue{false, "", &flag, f}
+	v := StringValue{"name", false, "", &flag, f}
 
 	flag.Set("bert")
 
@@ -79,7 +79,7 @@ func TestInt64Value1(t *testing.T) {
 
 	flag := Int64Flag{}
 
-	v := Int64Value{false, 0, &flag, f}
+	v := Int64Value{"name", false, 0, &flag, f}
 
 	v.Set()
 
@@ -99,7 +99,7 @@ func TestInt64Value2(t *testing.T) {
 
 	flag := Int64Flag{}
 
-	v := Int64Value{true, -23456789, &flag, f}
+	v := Int64Value{"name", true, -23456789, &flag, f}
 
 	v.Set()
 
@@ -119,7 +119,7 @@ func TestInt64Value3(t *testing.T) {
 
 	flag := Int64Flag{}
 
-	v := Int64Value{false, 0, &flag, f}
+	v := Int64Value{"name", false, 0, &flag, f}
 
 	flag.Set("-3456789")
 
@@ -141,7 +141,7 @@ func TestUint64Value1(t *testing.T) {
 
 	flag := Uint64Flag{}
 
-	v := Uint64Value{false, 0, &flag, f}
+	v := Uint64Value{"name", false, 0, &flag, f}
 
 	v.Set()
 
@@ -161,7 +161,7 @@ func TestUint64Value2(t *testing.T) {
 
 	flag := Uint64Flag{}
 
-	v := Uint64Value{true, 23456789, &flag, f}
+	v := Uint64Value{"name", true, 23456789, &flag, f}
 
 	v.Set()
 
@@ -181,7 +181,7 @@ func TestUint64Value3(t *testing.T) {
 
 	flag := Uint64Flag{}
 
-	v := Uint64Value{false, 0, &flag, f}
+	v := Uint64Value{"name", false, 0, &flag, f}
 
 	flag.Set("3456789")
 
@@ -203,7 +203,7 @@ func TestBoolValue1(t *testing.T) {
 
 	flag := BoolFlag{}
 
-	v := BoolValue{false, false, &flag, f}
+	v := BoolValue{"name", false, false, &flag, f}
 
 	v.Set()
 
@@ -223,7 +223,7 @@ func TestBoolValue2(t *testing.T) {
 
 	flag := BoolFlag{}
 
-	v := BoolValue{true, true, &flag, f}
+	v := BoolValue{"name", true, true, &flag, f}
 
 	v.Set()
 
@@ -243,7 +243,7 @@ func TestBoolValue3(t *testing.T) {
 
 	flag := BoolFlag{}
 
-	v := BoolValue{false, false, &flag, f}
+	v := BoolValue{"name", false, false, &flag, f}
 
 	flag.Set("true")
 
@@ -265,7 +265,7 @@ func TestFloat64Value1(t *testing.T) {
 
 	flag := Float64Flag{}
 
-	v := Float64Value{false, 0, &flag, f}
+	v := Float64Value{"name", false, 0, &flag, f}
 
 	v.Set()
 
@@ -285,7 +285,7 @@ func TestFloat64Value2(t *testing.T) {
 
 	flag := Float64Flag{}
 
-	v := Float64Value{true, -2.345, &flag, f}
+	v := Float64Value{"name", true, -2.345, &flag, f}
 
 	v.Set()
 
@@ -305,7 +305,7 @@ func TestFloat64Value3(t *testing.T) {
 
 	flag := Float64Flag{}
 
-	v := Float64Value{false, 0, &flag, f}
+	v := Float64Value{"name", false, 0, &flag, f}
 
 	flag.Set("-3.456")
 
@@ -327,7 +327,7 @@ func TestDurationValue1(t *testing.T) {
 
 	flag := DurationFlag{}
 
-	v := DurationValue{false, time.Duration(0), &flag, f}
+	v := DurationValue{"name", false, time.Duration(0), &flag, f}
 
 	v.Set()
 
@@ -347,7 +347,7 @@ func TestDurationValue2(t *testing.T) {
 
 	flag := DurationFlag{}
 
-	v := DurationValue{true, time.Duration(2), &flag, f}
+	v := DurationValue{"name", true, time.Duration(2), &flag, f}
 
 	v.Set()
 
@@ -367,7 +367,7 @@ func TestDurationValue3(t *testing.T) {
 
 	flag := DurationFlag{}
 
-	v := DurationValue{false, time.Duration(0), &flag, f}
+	v := DurationValue{"name", false, time.Duration(0), &flag, f}
 
 	flag.Set("3ns")
 

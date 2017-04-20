@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	_ "fmt"
 	"reflect"
 	"testing"
 	"time"

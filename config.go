@@ -93,7 +93,9 @@ func Load(structs ...interface{}) error {
 	for i := 0; i < numStructs; i++ {
 		for j := 0; j < len(fieldSetters[i].s); j++ {
 			if fieldSetters[i].s[j] != nil {
-				fieldSetters[i].s[j].Set()
+				if err := fieldSetters[i].s[j].Set(); err != nil {
+					return err
+				}
 			}
 		}
 
@@ -130,13 +132,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			def = defVal
 		}
 		if cf, ok := m[name]; ok {
-			val := StringValue{isDefVal, def, cf, t}
+			val := StringValue{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := StringFlag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := StringValue{isDefVal, def, &cf, t}
+			val := StringValue{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 
@@ -148,13 +150,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			}
 		}
 		if cf, ok := m[name]; ok {
-			val := IntValue{isDefVal, def, cf, t}
+			val := IntValue{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := IntFlag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := IntValue{isDefVal, def, &cf, t}
+			val := IntValue{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 
@@ -166,13 +168,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			}
 		}
 		if cf, ok := m[name]; ok {
-			val := Int64Value{isDefVal, def, cf, t}
+			val := Int64Value{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := Int64Flag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := Int64Value{isDefVal, def, &cf, t}
+			val := Int64Value{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 
@@ -184,13 +186,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			}
 		}
 		if cf, ok := m[name]; ok {
-			val := Uint64Value{isDefVal, def, cf, t}
+			val := Uint64Value{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := Uint64Flag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := Uint64Value{isDefVal, def, &cf, t}
+			val := Uint64Value{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 
@@ -202,13 +204,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			}
 		}
 		if cf, ok := m[name]; ok {
-			val := Float64Value{isDefVal, def, cf, t}
+			val := Float64Value{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := Float64Flag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := Float64Value{isDefVal, def, &cf, t}
+			val := Float64Value{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 
@@ -220,13 +222,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			}
 		}
 		if cf, ok := m[name]; ok {
-			val := BoolValue{isDefVal, def, cf, t}
+			val := BoolValue{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := BoolFlag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := BoolValue{isDefVal, def, &cf, t}
+			val := BoolValue{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 
@@ -238,13 +240,13 @@ func parseDefault(m map[string]ConfigFlag, t reflect.Value, name, defVal,
 			}
 		}
 		if cf, ok := m[name]; ok {
-			val := DurationValue{isDefVal, def, cf, t}
+			val := DurationValue{name, isDefVal, def, cf, t}
 			return &val, nil
 		} else {
 			cf := DurationFlag{}
 			m[name] = &cf
 			flag.Var(&cf, name, desc)
-			val := DurationValue{isDefVal, def, &cf, t}
+			val := DurationValue{name, isDefVal, def, &cf, t}
 			return &val, nil
 		}
 	}
